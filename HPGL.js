@@ -1,3 +1,6 @@
+// modifed from https://github.com/evomotors/SvgToGCode
+// improved on by https://github.com/tatarize/SvgToGCode/blob/master/code/gcode.js
+
 var fileName;
 var svgImage;
 var fileData;
