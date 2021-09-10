@@ -7,9 +7,11 @@ var fileData;
 var scaleMultiplier = 1;
 var limit = 1.0
 var interp = 10
+var machineWidthInput = document.getElementById("hpgl-machine-width").value;
+var machineHeightInput = document.getElementById("hpgl-machine-height").value;
 
-const targetWidth = 793;
-const targetHeight = 1122;
+ machineWidthInput = 793;
+ machineHeightInput = 1122;
 
 var HPGLColorCommands=[{Canvas:null, Color:"empty", Command:[{Move:"", X:0, Y:0, Z:0}]}];
 var HPGLCommands=[];
@@ -114,7 +116,7 @@ function GetCanvas(color)
     var canvas = document.getElementById('cnv'+color);
     if(canvas==null){
         var div = document.createElement("p");
-        div.style.width=targetWidth+'px';
+        div.style.width=machineWidthInput+'px';
         div.id='p'+color;
         div.style.backgroundColor=color;
         
@@ -123,13 +125,13 @@ function GetCanvas(color)
         cmd.type='button';
         
         cmd.innerHTML='Download ' + (color=="rgb(1,1,1)"?'in one color.':color);
-        cmd.style.width=targetWidth+'px';
+        cmd.style.width=machineWidthInput+'px';
         cmd.addEventListener('click', function() { SaveHPGL(this.id); }, false);
         
         canvas = document.createElement("canvas");
         canvas.id = 'cnv'+color;
-        canvas.width=targetWidth;
-        canvas.height=targetHeight;
+        canvas.width=machineWidthInput;
+        canvas.height=machineHeightInput;
         canvas.getContext("2d").strokeStyle = color;
         canvas.getContext("2d").beginPath();
         
@@ -144,8 +146,8 @@ function GetCanvas(color)
 function SetScaleMiltiplier()
 {
     // Figure out the ratio
-    var ratioX = targetWidth / svgImage.width;
-    var ratioY = targetHeight / svgImage.height;
+    var ratioX = machineWidthInput / svgImage.width;
+    var ratioY = machineHeightInput / svgImage.height;
     
     // use whichever multiplier is smaller
     scaleMultiplier = ratioX < ratioY ? ratioX : ratioY;
@@ -249,12 +251,10 @@ function SaveHPGL(canvasId)
     });
 }
 
-function DownloadHPGL(canvasId){	
-    
-    
+function DownloadHPGL(canvasId) {
+        
     var commands=['IN;SP1;'];
-    var opCommands=[];
-    
+
     debugger;
     
     if(canvasId.substring(3)=="rgb(1,1,1)"){

@@ -5,13 +5,14 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>SVG to HPGL</title>
 		<style>
-			body{padding: 10px;}
 			canvas{border:1px solid #d3d3d3; background-color: white;}
-			.alert-success{background-color: lightblue}
-			.alert-error{background-color: red}
-			p{margin-bottom:20px; border:1px solid #d3d3d3; background-color: white; padding:5px}
+			
+			#hpgl-machine-width{width: 5em;}
+			#hpgl-machine-height{width: 5em;}
+			
+
 		</style>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+		<link rel="stylesheet" type="text/css" href="siimple.min.css">
 	</head>
 	<body>
 			<div class="alert alert-success">
@@ -21,6 +22,15 @@
 				<strong>Error!</strong>
 			</div>
 			<br />
+			<p>
+				<label for="hpgl-machine-width">Plotter max travel width : </label>
+				<input type="number" value="259" id="hpgl-machine-width" onkeypress="limitKeypress(event,this.value,6)" step="0.1" max="9999" pattern="^\d{0,4}\.?\d{0,1}$"/>
+			</p>
+			<p>
+				<label for="hpgl-machine-height">Plotter max travel height : </label>
+				<input type="number" value="1159" id="hpgl-machine-height" onkeypress="limitKeypress(event,this.value,6)" step="0.1" max="9999" pattern="^\d{0,4}\.?\d{0,1}$"/>
+			</p>
+			
 			<input type="file"accept=".svg" id="File1" onchange="readURL(this);">
 			<div id="canvases"></div>
 			
@@ -30,4 +40,29 @@
 
 	<script src="HPGL.js"></script>
 	<script src="nanosvg.js"></script>
+	<script>
+
+
+
+$(document).on('keydown', 'input[pattern]', function(e){
+  var input = $(this);
+  var oldVal = input.val();
+  var regex = new RegExp(input.attr('pattern'), 'g');
+
+  setTimeout(function(){
+    var newVal = input.val();
+    if(!regex.test(newVal)){
+      input.val(oldVal); 
+    }
+  }, 1);
+});
+
+function limitKeypress(event, value, maxLength) {
+    if (value != undefined && value.toString().length >= maxLength) {
+		value = parseFloat(value).toFixed(1);
+        event.preventDefault();
+    }
+}
+</script>
 </html>
+
