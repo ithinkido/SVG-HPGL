@@ -5,12 +5,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>SVG to HPGL</title>
 		<style>
-			canvas{border:1px solid #d3d3d3; background-color: white;}
-			
+			canvas{border:1px solid #d3d3d3; background-color: white;}			
 			#hpgl-machine-width{width: 5em;}
 			#hpgl-machine-height{width: 5em;}
-			
-
 		</style>
 		<link rel="stylesheet" type="text/css" href="siimple.min.css">
 	</head>
@@ -23,12 +20,12 @@
 			</div>
 			<br />
 			<p>
-				<label for="hpgl-machine-width">Plotter max travel width : </label>
-				<input type="number" value="259" id="hpgl-machine-width" onkeypress="limitKeypress(event,this.value,6)" step="0.1" max="9999" pattern="^\d{0,4}\.?\d{0,1}$"/>
+				<label for="hpgl-machine-width">Page width : </label>
+				<input type="number" value="192" id="hpgl-machine-width" onkeypress="limitKeypress(event,this.value,6)" step="0.1" max="9999" pattern="^\d{0,4}\.?\d{0,1}$"/> mm
 			</p>
 			<p>
-				<label for="hpgl-machine-height">Plotter max travel height : </label>
-				<input type="number" value="1159" id="hpgl-machine-height" onkeypress="limitKeypress(event,this.value,6)" step="0.1" max="9999" pattern="^\d{0,4}\.?\d{0,1}$"/>
+				<label for="hpgl-machine-height">Page height : </label>
+				<input type="number" value="272" id="hpgl-machine-height" onkeypress="limitKeypress(event,this.value,6)" step="0.1" max="9999" pattern="^\d{0,4}\.?\d{0,1}$"/> mm
 			</p>
 			
 			<input type="file"accept=".svg" id="File1" onchange="readURL(this);">
@@ -40,29 +37,28 @@
 
 	<script src="HPGL.js"></script>
 	<script src="nanosvg.js"></script>
-	<script>
+<script>
 
+	$(document).on('keydown', 'input[pattern]', function(e) {
+		var input = $(this);
+		var oldVal = input.val();
+		var regex = new RegExp(input.attr('pattern'), 'g');
 
+		setTimeout(function() {
+			var newVal = input.val();
+			if (!regex.test(newVal)) {
+				input.val(oldVal);
+			}
+		}, 1);
+	});
 
-$(document).on('keydown', 'input[pattern]', function(e){
-  var input = $(this);
-  var oldVal = input.val();
-  var regex = new RegExp(input.attr('pattern'), 'g');
+	function limitKeypress(event, value, maxLength) {
+		if (value != undefined && value.toString().length >= maxLength) {
+			value = parseFloat(value).toFixed(1);
+			event.preventDefault();
+		}
+	}
 
-  setTimeout(function(){
-    var newVal = input.val();
-    if(!regex.test(newVal)){
-      input.val(oldVal); 
-    }
-  }, 1);
-});
-
-function limitKeypress(event, value, maxLength) {
-    if (value != undefined && value.toString().length >= maxLength) {
-		value = parseFloat(value).toFixed(1);
-        event.preventDefault();
-    }
-}
 </script>
 </html>
 

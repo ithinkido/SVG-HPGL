@@ -7,13 +7,11 @@ var fileData;
 var scaleMultiplier = 1;
 var limit = 1.0
 var interp = 10
-var machineWidthInput = document.getElementById("hpgl-machine-width").value;
-var machineHeightInput = document.getElementById("hpgl-machine-height").value;
+var machineWidthInput = document.getElementById("hpgl-machine-width").value * 4 ;
+var machineHeightInput = document.getElementById("hpgl-machine-height").value * 4 ;
 
- machineWidthInput = 793;
- machineHeightInput = 1122;
 
-var HPGLColorCommands=[{Canvas:null, Color:"empty", Command:[{Move:"", X:0, Y:0, Z:0}]}];
+var HPGLColorCommands=[{Canvas:null, Color:"empty", Command:[{Move:"", X:0, Y:0}]}];
 var HPGLCommands=[];
 
 ClearAll();
@@ -113,6 +111,8 @@ function ParseSVG(line, move){
 
 function GetCanvas(color)
 {
+    machineWidthInput = document.getElementById("hpgl-machine-width").value * 4 ;
+    machineHeightInput = document.getElementById("hpgl-machine-height").value *4 ;
     var canvas = document.getElementById('cnv'+color);
     if(canvas==null){
         var div = document.createElement("p");
