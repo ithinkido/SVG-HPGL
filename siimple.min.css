@@ -9,10 +9,6 @@ ol,ol li,p,ul,ul li{
 .alert,.btn{
     border-radius:5px
 }
-.heart:after{
-    content:"\2764";
-    color:#f45660
-}
 body,h1,h2,h3,h4,h5,h6{
     color:#526475
 }
