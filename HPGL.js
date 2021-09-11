@@ -122,7 +122,7 @@ function GetCanvas(color)
         
         var cmd = document.createElement("button");
         cmd.id='cmd'+color;
-        cmd.type='button';
+        cmd.type='btn';
         
         cmd.innerHTML='Download ' + (color=="rgb(1,1,1)"?'in one color.':color);
         cmd.style.width=machineWidthInput+'px';
@@ -234,9 +234,9 @@ function SaveHPGL(canvasId)
         boxWidth: '30%',
         useBootstrap: false,
         title: 'SVG to HPGL',
-        content: '<font color="'+GetHexFromRGB(canvasId.substring(3))+'">"Download HPGL for this color?"</font>',
+        content: '<font color="'+GetHexFromRGB(canvasId.substring(3))+'">Download HPGL for this color?</font>',
         buttons: {
-            cancel: function () {
+            Cancel: function () {
                 return;
             },
             somethingElse: {
