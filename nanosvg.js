@@ -414,7 +414,7 @@ function nsvg__isspace(c) {
 }
 
 function nsvg__isdigit(c) {
-	return strchr("0123456789", c) != 0;
+	return strchr("0123456789.", c) != 0;
 }
 
 function nsvg__isnum(c) {
@@ -1916,10 +1916,10 @@ function nsvg__pathArcTo(p, cpx, cpy, args, rel) {
 	vy = ((-y1p) - cyp) / ry;
 	a1 = nsvg__vecang(1.0, 0.0, ux, uy);
 	da = nsvg__vecang(ux, uy, vx, vy);
-	if (fa) {
-		if (da > 0.0) da = da - (2 * 3.14159265358979323846264338327);
-		else da = (2 * 3.14159265358979323846264338327) + da;
-	}
+	if (fa == 0 && da > 0) 
+		da -= 2 * 3.14159265358979323846264338327;
+	else if (fs == 1 && da < 0)
+		da += 2 * 3.14159265358979323846264338327;
 	t[0] = cosrx;
 	t[1] = sinrx;
 	t[2] = -sinrx;
@@ -1928,7 +1928,16 @@ function nsvg__pathArcTo(p, cpx, cpy, args, rel) {
 	t[5] = cy;
 	ndivs = ((fabsf(da) / (3.14159265358979323846264338327 * 0.5)) + 1.0);
 	hda = (da / (ndivs)) / 2.0;
-	kappa = fabsf(((4.0 / 3.0) * (1.0 - cosf(hda))) / sinf(hda));
+
+// https://github.com/memononen/nanosvg/pull/196/commits/44e5e4c76564d127cd2e3ae6dae9c1a2c6d219f3
+
+	if ((hda < 1e-3) && (hda > -1e-3))
+	hda *= 0.5;
+	else
+		hda = (1.0 - cosf(hda)) / sinf(hda);
+	kappa = fabsf(4.0 / 3.0 * hda);
+
+
 	if (da < 0.0) kappa = -kappa;
 	for (i = 0; i <= ndivs; i++) {
 		a = a1 + (da * (i / (ndivs)));
@@ -2263,9 +2272,9 @@ function nsvg__parseSVG(p, attr) {
 	for (i = 0; attr[i]; i += 2) {
 		if (!nsvg__parseAttr(p, attr[i], attr[i + 1])) {
 			if (attr[i] === "width") {
-				p.image.width = nsvg__parseCoordinate(p, attr[i + 1], 0.0, 1.0);
+				p.image.width = nsvg__parseCoordinate(p, attr[i + 1], 0.0, 0.0);
 			} else if (attr[i] === "height") {
-				p.image.height = nsvg__parseCoordinate(p, attr[i + 1], 0.0, 1.0);
+				p.image.height = nsvg__parseCoordinate(p, attr[i + 1], 0.0, 0.0);
 			} else if (attr[i] === "viewBox") {} else if (attr[i] === "preserveAspectRatio") {
 				if (strstr(attr[i + 1], "none") != 0) {
 					p.alignType = 0;
