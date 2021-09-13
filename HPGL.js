@@ -7,8 +7,8 @@ var fileData;
 var scaleMultiplier = 1;
 var limit = 1.0
 var interp = 10
-var machineWidthInput = document.getElementById("hpgl-machine-width").value * 4 ;
-var machineHeightInput = document.getElementById("hpgl-machine-height").value * 4 ;
+var machineWidthInput = 191 * 4 ;
+var machineHeightInput = 272 * 4 ;
 
 
 var HPGLColorCommands=[{Canvas:null, Color:"empty", Command:[{Move:"", X:0, Y:0}]}];
@@ -113,6 +113,10 @@ function GetCanvas(color)
 {
     machineWidthInput = document.getElementById("hpgl-machine-width").value * 4 ;
     machineHeightInput = document.getElementById("hpgl-machine-height").value *4 ;
+    if (machineHeightInput === 0 | machineWidthInput === 0){
+        machineHeightInput = 272 * 4;
+        machineWidthInput = 191 * 4;
+    }
     var canvas = document.getElementById('cnv'+color);
     if(canvas==null){
         var div = document.createElement("p");
@@ -177,7 +181,7 @@ function Finish(mctx)
         " color" + (numOfColors>1?"(s)":"");
     
     // show success alert and hide error
-    $(".alert-success").html('<strong>Success!</strong> ' + message);
+    $(".alert").html('<strong>Success!</strong>' + message);
     $(".alert-success").css("display", "block");
     
     // remove second canvas if there is only one color
@@ -232,7 +236,7 @@ function SaveHPGL(canvasId)
 {
     $.confirm({
         boxWidth: '30%',
-        useBootstrap: false,
+        useBootstrap: true,
         title: 'SVG to HPGL',
         content: '<font color="'+GetHexFromRGB(canvasId.substring(3))+'">Download HPGL for this color?</font>',
         buttons: {
