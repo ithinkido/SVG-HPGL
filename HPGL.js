@@ -121,15 +121,13 @@ function GetCanvas(color)
     if(canvas==null){
         var div = document.createElement("p");
         div.style.width=machineWidthInput+'px';
-        div.id='p'+color;
+        div.id='p'+color;        
         div.style.backgroundColor=color;
-        
-        var cmd = document.createElement("button");
-        cmd.id='cmd'+color;
-        cmd.type='btn';
-        
+
+        var cmd = document.createElement("div");
+        cmd.className = 'btn'
+        cmd.id='cmd'+color;        
         cmd.innerHTML='Download ' + (color=="rgb(1,1,1)"?'in one color.':color);
-        cmd.style.width=machineWidthInput+'px';
         cmd.addEventListener('click', function() { SaveHPGL(this.id); }, false);
         
         canvas = document.createElement("canvas");
@@ -143,6 +141,8 @@ function GetCanvas(color)
         div.appendChild(cmd);
         
         document.getElementById("canvases").appendChild(div);
+        $("#File1").css("display", "none");
+        $(".btn-outline").css("display", "none");
     }
     return canvas;
 }
@@ -233,7 +233,8 @@ function rescale(x){
 }
 
 function SaveHPGL(canvasId)
-{
+{   
+
     $.confirm({
         boxWidth: '30%',
         useBootstrap: true,
@@ -241,6 +242,8 @@ function SaveHPGL(canvasId)
         content: '<font color="'+GetHexFromRGB(canvasId.substring(3))+'">Download HPGL for this color?</font>',
         buttons: {
             Cancel: function () {
+                $("#File1").css("display", "block");
+                $(".btn-outline").css("display", "block");
                 return;
             },
             somethingElse: {
@@ -249,6 +252,8 @@ function SaveHPGL(canvasId)
                 keys: ['enter', 'shift'],
                 action: function(){
                     DownloadHPGL(canvasId);
+                    $("#File1").css("display", "block");
+                    $(".btn-outline").css("display", "block");
                 }
             }
         }
