@@ -181,7 +181,7 @@ function Finish(mctx)
         " color" + (numOfColors>1?"(s)":"");
     
     // show success alert and hide error
-    $(".alert").html('<strong>Success!</strong>' + message);
+    $(".alert").html('<strong>Success! </strong>' + message);
     $(".alert-success").css("display", "block");
     
     // remove second canvas if there is only one color
@@ -243,7 +243,7 @@ function SaveHPGL(canvasId)
         buttons: {
             Cancel: function () {
                 $("#File1").css("display", "block");
-                $(".btn-outline").css("display", "block");
+                $(".btn-outline").css("display", "inline-block");
                 return;
             },
             somethingElse: {
@@ -253,7 +253,7 @@ function SaveHPGL(canvasId)
                 action: function(){
                     DownloadHPGL(canvasId);
                     $("#File1").css("display", "block");
-                    $(".btn-outline").css("display", "block");
+                    $(".btn-outline").css("display", "inline-block");
                 }
             }
         }
