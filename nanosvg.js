@@ -1916,7 +1916,7 @@ function nsvg__pathArcTo(p, cpx, cpy, args, rel) {
 	vy = ((-y1p) - cyp) / ry;
 	a1 = nsvg__vecang(1.0, 0.0, ux, uy);
 	da = nsvg__vecang(ux, uy, vx, vy);
-	if (fa == 0 && da > 0) 
+	if (fs == 0 && da > 0) 
 		da -= 2 * 3.14159265358979323846264338327;
 	else if (fs == 1 && da < 0)
 		da += 2 * 3.14159265358979323846264338327;
@@ -1926,15 +1926,18 @@ function nsvg__pathArcTo(p, cpx, cpy, args, rel) {
 	t[3] = cosrx;
 	t[4] = cx;
 	t[5] = cy;
-	ndivs = ((fabsf(da) / (3.14159265358979323846264338327 * 0.5)) + 1.0);
-	hda = (da / (ndivs)) / 2.0;
+
+//  https://github.com/tatarize/nanosvgjs/commit/e9ae82012512e50d376ad141eec514c71c012955
+
+	ndivs = Math.floor((fabsf(da) / (3.14159265358979323846264338327 * 0.5)) + 1.0);	hda = (da / (ndivs)) / 2.0;
 
 // https://github.com/memononen/nanosvg/pull/196/commits/44e5e4c76564d127cd2e3ae6dae9c1a2c6d219f3
 
+	hda = (da / (ndivs)) / 2.0;
 	if ((hda < 1e-3) && (hda > -1e-3))
-	hda *= 0.5;
-	else
-		hda = (1.0 - cosf(hda)) / sinf(hda);
+			hda *= 0.5;
+		else
+			hda = (1.0 - cosf(hda)) / sinf(hda);
 	kappa = fabsf(4.0 / 3.0 * hda);
 
 
